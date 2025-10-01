@@ -2,10 +2,34 @@
 require('dotenv').config();
 const apiKey = process.env.GOOGLE_BOOKS_API;
 
+// Fetch from most trending books:
+const fetchTrending = async () => {
+    try {
+        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=a&printType=books&langRestrict=en&key=${apiKey}&orderBy=relevance&maxResults=40&startIndex=0`);
+        if (!res.ok) {
+            throw new Error("Error fetching books...");
+        }
+        const data = await res.json();
+        return data.items || [];
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
+// Fetching specific book:
+const fetchBookId = async (bookId) => {
+    const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}`);
+    if (!res.ok) {
+        throw new Error("Error! Book not found...");
+    }
+    const data = await res.json();
+    return data;
+}
+
 // Fetching for any match
 const fetchBooks = async (value) => {
     try {
-        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${value}&key=${apiKey}&orderBy=relevance&maxResults=40&startIndex=0`);
+        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${value}&key=${apiKey}&orderBy=relevance&langRestrict=en&maxResults=40&startIndex=0`);
         if (!res.ok) {
             throw new Error("Error fetching books...")
         } 
@@ -46,4 +70,4 @@ const fetchByTitle = async (title) => {
     }
 }
 
-module.exports = {fetchBooks, fetchByAuthor, fetchByTitle}
+module.exports = {fetchBooks, fetchByAuthor, fetchByTitle, fetchTrending, fetchBookId}

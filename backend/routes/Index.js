@@ -3,7 +3,20 @@
 const {Router} = require('express');
 const indexRouter = Router();
 // Fetching function:
-const { fetchBooks } = require('../utils/fetchBook');
+const { fetchBooks, fetchTrending } = require('../utils/fetchBook');
+
+indexRouter.get('/', async (req, res)=>{
+    try {
+        const data = await fetchTrending();
+        if (!data) {
+            return res.status(500).json({error:"Can't retrieve books..."})
+        } 
+        res.json(data)
+    }
+    catch (err) {
+        console.error(err)
+    }
+})
 
 // Defining routes:
 indexRouter.post('/', async (req, res)=>{
@@ -11,7 +24,7 @@ indexRouter.post('/', async (req, res)=>{
         const {query} = req.body;
         const data = await fetchBooks (query);
         if (!data) {
-            return res.status(500).json({errormsg: "Can't retrieve books..."})
+            return res.status(500).json({error: "Can't retrieve books..."})
         }
         res.json(data);
     }
