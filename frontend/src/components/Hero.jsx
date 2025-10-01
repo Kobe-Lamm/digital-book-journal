@@ -18,7 +18,7 @@ const Hero = () => {
         </div>
         
         {/* --Right Side-- */}
-        <div className='flex-0.5 md:w-1/2 relative'>
+        <div className='flex-0.5 md:w-1/2 relative rounded-full'>
             <img className='cursor-pointer max-w-full max-h-full bottom-0  rounded-lg' src={MainHeader} alt=""></img>
         </div>
 
