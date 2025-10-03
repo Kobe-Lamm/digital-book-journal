@@ -1,14 +1,25 @@
 // Setting up database: 
 const mongoose = require('mongoose');
-
+// Importing models:
+const User = require('../models/User')
 // Connecting to database: 
-mongoose.connect("mongodb://localhost/readify", 
-    ()=>{
-        console.log("Connected to database.")
-    },
-    e => console.error(e)
-);
+mongoose.connect("mongodb://localhost/readify");
 
-// Functions:
-// Inserting
-// Updating
+// Queries: 
+const createNewUser = async ({username, email, password}) => {
+    try {
+        const user = await User.create({username, email, password});
+        return user;
+    }
+    catch (err) {
+        throw err
+    }
+}
+const findUser = async (username) => {
+
+}
+// Creating a new user: 
+// Exporting: 
+module.exports = {
+    createNewUser
+}

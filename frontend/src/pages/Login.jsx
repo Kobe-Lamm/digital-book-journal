@@ -33,7 +33,7 @@ const Login = () => {
           <input name='email' onChange={(e)=>handleChange(e)} value={input.email} type='email' className='outline-none border rounded-lg px-10 py-1' placeholder='Enter your email'></input>
           <input name='password' onChange={(e)=>handleChange(e)} value={input.password} type='password' className='outline-none border rounded-lg px-10 py-1' placeholder='Enter your password'></input>
           <input name='checkPassword' onChange={(e)=>handleChange(e)} value={input.checkPassword} type='password' className='outline-none border rounded-lg px-10 py-1' placeholder='Re-enter your password'></input>
-          <button className='bg-black rounded-lg py-2 text-white cursor-pointer' type='submit'>Log in</button>
+          <button className='bg-gray-800 rounded-lg py-2 text-white cursor-pointer' type='submit'>Log in</button>
         </form>
         <p className='font-light'>Don't have an account? <a href='/signup' className='font-medium underline decoration-3 leading-relaxed cursor-pointer'>Create one</a></p>
       </div>

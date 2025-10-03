@@ -1,6 +1,6 @@
 const {Router} = require("express");
 const bookRouter = Router();
-const {fetchBookId} = require('../utils/fetchBook')
+const {fetchBookId, fetchByCategory} = require('../utils/fetchBook')
 
 // Defining routes:
 // Get routes:
@@ -17,5 +17,21 @@ bookRouter.get("/:bookId", async (req, res)=>{
         console.error(err)
     }
 })
+
+
+bookRouter.post("/category", async (req, res)=>{
+    try {
+        const { categories } = req.body;
+        const bookData = await fetchByCategory(categories[0]);
+        if (!bookData) {
+            return res.status(500).json({msg:"Error! Can't find other books..."})
+        }
+        res.json(bookData);
+    }
+    catch (err) {
+        console.error(err);
+    }
+})
+
 
 module.exports = bookRouter

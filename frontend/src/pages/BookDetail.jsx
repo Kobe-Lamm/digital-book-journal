@@ -1,9 +1,16 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
+import BookCard from '../components/BookCard';
+import BookInfo from '../components/BookInfo';
+import SimilarBooks from '../components/SimilarBooks';
+import Search from '../components/Search'
 
 const BookDetail = () => {
-    const [currentBook, setCurrentBook] = useState(null);
+    const [currentBook, setCurrentBook] = useState(false);
     const {bookId} = useParams();
     // Fetching the book information:
     useEffect(()=>{
@@ -23,26 +30,24 @@ const BookDetail = () => {
        fetchId();
     },[bookId])
     return (
-        <div>
+        <div  className='bg-gray-50 h-screen px-10 py-4'>
             {
                 !currentBook 
-                ? <p>Loading...</p> 
+                ? <div>
+                    <FontAwesomeIcon className=' text-gray-800 text-2xl animate-spin' icon={faSpinner}></FontAwesomeIcon>
+                    <p>Loading...</p>
+                </div> 
                 : <div key={currentBook.id}>
                     <div>
-                        <div>
-                            <p>{currentBook.volumeInfo.title}</p>
-                            <p>{currentBook.volumeInfo.authors}</p>
-                            <p>{currentBook.volumeInfo.description}</p>
-                        </div>
-                        <div>
-                            <img src={currentBook.volumeInfo.imageLinks.thumbnail} />
-                        </div>
+                        <BookInfo title={currentBook.volumeInfo.title} authors={currentBook.volumeInfo.authors} coverImg={currentBook.volumeInfo.imageLinks.thumbnail} description={currentBook.volumeInfo.description} categories={currentBook.volumeInfo.categories} />
                     </div>
+                    <hr/>
                     <div>
-
+                        <SimilarBooks categories={currentBook.volumeInfo.categories} />
                     </div>
                 </div>
             }
+            <Search />
         </div>
   )
 }

@@ -1,16 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSearch, faSpinner} from '@fortawesome/free-solid-svg-icons'
+import BookCard from './BookCard'
 
 const Search = () => {
     // State variables
     const [books, setBooks] = useState([]);
     const [input, setInput] = useState("")
     const [loading, setLoading] = useState(false);
-    // Navigation:
-    const navigate = useNavigate();
     // Fetching:
     const fetchTrending = async () => {
         try {
@@ -79,15 +77,10 @@ const Search = () => {
             </div>
             <div className='bg-gray-50 curounded-lg mt-5 px-5 py-5 grid grid-cols-5 gap-5 items-start'>
                     {loading === false ? books.map((book)=>(
-                        <div key={book.id} onClick={()=>{navigate(`/book/${book.id}`)}} className='cursor-pointer hover:translate-y-[-10px] transition-all duration-500'>
-                            <div className=''>
-                                <img className='w-60 h-80 object-cover mb-2 rounded-lg' src={book.volumeInfo.imageLinks.thumbnail}></img>
-                            </div>
-                            <p className=' text-base text-gray-800 font-light'><span className='font-medium'>{book.volumeInfo.title}</span> By <span className='font-medium'>{book.volumeInfo.authors}</span></p>
-                        </div>
+                        <BookCard title={book.volumeInfo.title} authors={book.volumeInfo.authors} bookId={book.id} coverImg = {book.volumeInfo.imageLinks.thumbnail} />
                     )) : 
-                        <div>
-                            <FontAwesomeIcon icon={faSpinner} />
+                        <div className='flex gap-2 text-2xl text-gray-600 font-light justify-center items-center text-center'>
+                            <FontAwesomeIcon className='animate-spin' icon={faSpinner} />
                             <p>Loading...</p>
                         </div>
                     }
