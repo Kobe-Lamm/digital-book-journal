@@ -13,19 +13,17 @@ const SignUp = () => {
     password: "",
     checkPassword: ""
   })
-
-  // Checking if entered password matches password:
-  const checkingValidation = () => {
-    if (input.password === input.checkPassword) {
-      setValid(true);
-    } else {
-      setValid(false)
-    }
-  }
   // Submitting form and sending to backend: 
   const submitForm = async (e) => {
+    // Prevent reloading
     e.preventDefault();
-    checkingValidation();
+    // Checking passwords
+    if (input.password !== input.checkPassword) {
+      setValid(false);
+      return
+    }
+    setValid(true);
+    // Async funct: 
     try {
       if (valid === true) {
         const res = await fetch("http://localhost:3000/signup", {
@@ -34,7 +32,9 @@ const SignUp = () => {
           // Converting input variable to JSON string
           body: JSON.stringify(input)
         })
+        console.log(res.status);
         if (!res.ok) {
+          setValid(false);
           throw new Error("Error submitting form");
         }
         // If signup is successful, redirect to login.
@@ -62,7 +62,7 @@ const SignUp = () => {
       <div className='text-normal font-normal justify-center items-center gap-4 flex flex-col'>
         <div className='text-red-500 font-medium'>{!valid ? "Error! Password entered does not match..." : ""}</div>
         <h1 className='text-3xl font-semibold'>Sign up</h1>
-        <form onSubmit={submitForm} className='flex flex-col gap-4' action="/signup" method="post">
+        <form onSubmit={submitForm} className='flex flex-col gap-4'>
           <input name="username" type="text" required value={input.username} onChange={handleChange} className='py-1 outline-none border rounded-lg px-10'  placeholder="Enter your username"></input>
           <input name="email" type="email" required value={input.email} onChange={handleChange} className='py-1 outline-none border rounded-lg px-10'  placeholder="Enter your email"></input>
           <input name="password" type="password" required value={input.password} onChange={handleChange} className='py-1 outline-none border rounded-lg px-10'  placeholder="Enter your password"></input>

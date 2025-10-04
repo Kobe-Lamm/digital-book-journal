@@ -5,7 +5,7 @@ const apiKey = process.env.GOOGLE_BOOKS_API;
 // Fetch from most trending books:
 const fetchTrending = async () => {
     try {
-        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:fiction+fantasy&key=${apiKey}`);
+        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:fiction+fantasy&maxResults=40&key=${apiKey}`);
         if (!res.ok) {
              console.error( "Fetch failed",res.status, text )
             throw new Error("Error fetching books...");

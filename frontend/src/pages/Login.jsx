@@ -2,9 +2,15 @@
 import React from 'react'
 import LoginPic from '../assets/login-picture.jpg'
 import { useState } from 'react'
+// Importing context
+import { useToken } from '../context/AuthToken'
+import { useNavigate } from 'react-router-dom'
 
 // Logging in: 
 const Login = () => {
+  const navigate = useNavigate();
+  // Importing the token
+  const { token, setToken } = useToken();
   // State variables: 
   const [input, setInput] = useState({
     username: "",
@@ -20,7 +26,32 @@ const Login = () => {
       [name]: value,
     }))
   }
-  // 
+  // Sending information to backend:
+  const sendInfo = async (e) => {
+    // Prevent reloading
+    e.preventDefault();
+    // Async
+    try {
+      // Fetching from backend
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(input)
+      })
+      console.log(res)
+      if (!res.ok) {
+        throw new Error("Error logging in");
+      }
+      const data = await res.json() // Should be the json web token
+      setToken(data.token); // Extracting token
+      const userId = data.user.id; // Extracting user id sent by backend
+      navigate(`/dashboard/${userId}`); // Navigate to personal dashboard
+    }
+    catch (err) {
+      console.error(err)
+    }
+  }
+  // Return jsx:
   return (
     <div className='grid grid-cols-2'>
       <div className='cursor-pointer hover:translate-y-[-10px] transition-all duration-500 flex-1 h-full'>
@@ -28,7 +59,7 @@ const Login = () => {
       </div>
       <div className='flex flex-col items-center gap-5 justify-center'>
         <h1 className='cursor-pointer text-3xl font-semibold'>Please login</h1>
-        <form className='flex gap-5 text-base flex-col' action='/login' method='POST'>
+        <form onSubmit={sendInfo} className='flex gap-5 text-base flex-col' action='/login' method='POST'>
           <input name='username' onChange={(e)=>handleChange(e)} value={input.username} type='text' className='outline-none border rounded-lg px-10 py-1' placeholder='Enter your username'></input>
           <input name='email' onChange={(e)=>handleChange(e)} value={input.email} type='email' className='outline-none border rounded-lg px-10 py-1' placeholder='Enter your email'></input>
           <input name='password' onChange={(e)=>handleChange(e)} value={input.password} type='password' className='outline-none border rounded-lg px-10 py-1' placeholder='Enter your password'></input>

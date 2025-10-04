@@ -11,6 +11,7 @@ import BookDetail from './pages/BookDetail'
 import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard.jsx'
 
+
 const App = () => {
   return (
     <div className='px-10 py-5'>
