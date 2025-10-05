@@ -2,15 +2,11 @@
 import React from 'react'
 import LoginPic from '../assets/login-picture.jpg'
 import { useState } from 'react'
-// Importing context
-import { useToken } from '../context/AuthToken'
 import { useNavigate } from 'react-router-dom'
 
 // Logging in: 
 const Login = () => {
   const navigate = useNavigate();
-  // Importing the token
-  const { token, setToken } = useToken();
   // State variables: 
   const [input, setInput] = useState({
     username: "",
@@ -43,9 +39,7 @@ const Login = () => {
         throw new Error("Error logging in");
       }
       const data = await res.json() // Should be the json web token
-      setToken(data.token); // Extracting token
-      const userId = data.user.id; // Extracting user id sent by backend
-      navigate(`/dashboard/${userId}`); // Navigate to personal dashboard
+      navigate(`/dashboard/${data.username}`); // Navigate to personal dashboard
     }
     catch (err) {
       console.error(err)

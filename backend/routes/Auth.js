@@ -36,21 +36,26 @@ Login.post("/", async (req, res) => {
         const user = await findUser(username);
         if (!user) {throw new Error("Can't find user...")}
         
-        // Check user password:
+        // Check user password - Authentication
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {return res.status(400).json({msg: "Invalid password"})};
         
-        // Creating the token:
+        // Creating the token - Authorization: 
         const token = jwt.sign(
             {id: user._id, username: user.username},
             secret,
             {expiresIn: "1h"}
         )
+        
+        // Storing cookie into httpCookie:
+        res.cookie('token', token, {
+            httpOnly: true, // JS cannot access
+            secure: true, // Only covers HTTPS
+            sameSite: 'Strict' // CSRF protection
+        })
 
         // Sending token to front-end:
-        res.json({ 
-            token, 
-            user: {id:user._id, username: user.username, email: user.email }})
+        res.json( { id: user._id, username: user.username, email: user.email } )
     }
     catch (err) {
         console.error(err);

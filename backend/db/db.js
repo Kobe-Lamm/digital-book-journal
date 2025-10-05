@@ -33,6 +33,7 @@ const findUser = async (username) => {
         throw err
     }
 }
+
 // Creating a new user: 
 // Exporting: 
 module.exports = {
