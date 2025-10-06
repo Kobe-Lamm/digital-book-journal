@@ -10,13 +10,15 @@ const port = process.env.PORT
 // Importing routers: 
 const indexRouter = require('./routes/Index');
 const bookRouter = require('./routes/Book');
-const {Login, Signup} = require('./routes/Auth')
+const {Login, Signup, Logout} = require('./routes/Auth')
 const UserRouter = require('./routes/User')
 
 // Setting up middleware:
 // Parsing JSON
 app.use(express.json());
 
+// Static image websites:
+app.use("/uploads",express.static( __dirname + "/uploads"))
 // Cross Site:
 app.use(cors({
     origin: "http://localhost:5173",
@@ -29,6 +31,7 @@ app.use('/book', bookRouter);
 app.use('/signup', Signup);
 app.use('/login', Login);
 app.use('/dashboard', UserRouter);
+app.use('/logout', Logout)
 
 // Listening for port requests
 app.listen(port, ()=>{

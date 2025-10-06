@@ -2,6 +2,7 @@ require('dotenv').config();
 const {Router} = require('express');
 const Login = Router();
 const Signup = Router();
+const Logout = Router();
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET
 
@@ -9,22 +10,35 @@ const bcrypt = require('bcrypt');
 
 
 // Importing user model:
-const { createNewUser, findUser } = require('../db/db');
+const { createNewUser, findUser, createNewCollection } = require('../db/db');
 
 // Signing up:
 Signup.post('/', async (req, res)=> {
     try {
         // Getting user-input: 
-        const { username, email, password } = req.body;
+        const { input, defaultCollections } = req.body;
+        // Loop to create the collection model: 
+        const createdCollections = await Promise.all(
+            defaultCollections.map( col => createNewCollection(col))
+        )
+        const collectionIds = createdCollections.map(col=>col._id);
         // Creating a new user:
-        const newUser = await createNewUser({username, email, password});
+        const newUser = await createNewUser({
+            username: input.username, 
+            email: input.email, 
+            password: input.password, 
+            collections: collectionIds
+        });
+        // If Failure:
         if (!newUser) {
             res.status(501).send({msg: "Error! Can't create user..."})
         }
+        // If success:
         res.status(201).json({msg: "Successfully created user!", user: newUser});
     }
     catch (err) {
-        throw err;
+        console.error(err);
+        res.status(500).json({msg: "Error creating new user... Please try again."})
     }
 });
 
@@ -55,7 +69,7 @@ Login.post("/", async (req, res) => {
         })
 
         // Sending token to front-end:
-        res.json( { id: user._id, username: user.username, email: user.email } )
+        res.json( { id: user._id, username: user.username, email: user.email,  } )
     }
     catch (err) {
         console.error(err);
@@ -63,4 +77,22 @@ Login.post("/", async (req, res) => {
     }
 })
 
-module.exports = {Login, Signup}
+// Logging out
+Logout.post("/", (req, res)=>{
+    try {
+        // Removing the jwt token
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        })
+        // Sending response: 
+        res.status(201).json({msg: "Logged out successful!"})
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({msg: err})
+    }
+})
+
+module.exports = {Login, Signup, Logout}

@@ -1,25 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
+import CollectionCard from '../components/CollectionCard';
 
 
 const Dashboard = () => {
-  // Navigate:
-  const navigate = useNavigate();
   // Getting the username fromt the url:
   const {username} = useParams();
   // Retrieving information
-  const [currentUser, setCurrentUser] = useState({});
-  // Logging out:
-  const logOut = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/logout");
-      navigate('/home');
-    }
-    catch (err) {
-      console.error(err)
-    }
-  }
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(()=>{
     // fetching from back-end:
@@ -39,13 +28,20 @@ const Dashboard = () => {
     getCurrentUser();
   }, [username])
 
+  if (!currentUser) return <p>loading...</p>
   return (
     <div>
-        <h1>Welcome back {currentUser.username}</h1>
-        <button className='cursor-pointer' onClick={logOut} >Log out</button>
-        <div>
-          <h1>Your collections:</h1>
-          <p></p>
+        <h1 className='text-3xl font-semibold text-gray-900'>Welcome back: {currentUser.username.toUpperCase()}</h1>
+        <button className='cursor-pointer' >Log out</button>
+        <div className='flex flex-col'>
+          <h1 className='text-xl font-medium text-gray-800'>Your collections:</h1>
+          <ul className='flex gap-5 '>
+            {currentUser.collections.map((col)=>(
+              <NavLink key={col._id} to={`/collection/${col._id}`}>
+                <CollectionCard title={col.title} author={col.author} description = {col.description} coverImg = {col.image} />
+              </NavLink>
+            ))}
+          </ul>
         </div>
     </div>
   )

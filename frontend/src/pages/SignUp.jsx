@@ -13,6 +13,12 @@ const SignUp = () => {
     password: "",
     checkPassword: ""
   })
+  // Initializing book collections for users:
+  const defaultCollections = [
+    {title: "Reading", author: input.username, books:[] },
+    {title: "Wants to read", author: input.username, books:[] },
+    {title: "Already read", author: input.username, books:[]}
+  ]
   // Submitting form and sending to backend: 
   const submitForm = async (e) => {
     // Prevent reloading
@@ -30,7 +36,7 @@ const SignUp = () => {
           method:"POST", 
           headers:{"Content-Type":"application/json"},
           // Converting input variable to JSON string
-          body: JSON.stringify(input)
+          body: JSON.stringify({input, defaultCollections})
         })
         console.log(res.status);
         if (!res.ok) {
