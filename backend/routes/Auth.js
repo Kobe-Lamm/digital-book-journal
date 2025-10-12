@@ -5,7 +5,7 @@ const Signup = Router();
 const Logout = Router();
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET
-
+// Bcrypt security
 const bcrypt = require('bcrypt');
 
 
@@ -49,7 +49,6 @@ Login.post("/", async (req, res) => {
         const {username, password} = req.body;
         const user = await findUser(username);
         if (!user) {throw new Error("Can't find user...")}
-        
         // Check user password - Authentication
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {return res.status(400).json({msg: "Invalid password"})};
@@ -64,12 +63,11 @@ Login.post("/", async (req, res) => {
         // Storing cookie into httpCookie:
         res.cookie('token', token, {
             httpOnly: true, // JS cannot access
-            secure: true, // Only covers HTTPS
-            sameSite: 'Strict' // CSRF protection
+            secure: process.env.NODE_ENV === "production", // Only covers HTTPS
+            sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax" // CSRF protection
         })
 
-        // Sending token to front-end:
-        res.json( { id: user._id, username: user.username, email: user.email,  } )
+        res.json( user )
     }
     catch (err) {
         console.error(err);

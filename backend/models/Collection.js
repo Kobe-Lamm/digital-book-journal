@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const { BookSchema } = require('./Book')
 
+
 // Creating the schema:
 const CollectionSchema = new mongoose.Schema({
     title: {type: String, required: true},
@@ -9,7 +10,7 @@ const CollectionSchema = new mongoose.Schema({
     date: {type: Date, default: Date.now},
     description: {type: String, default: "Describe your collection!"},
     image: {type: String, default: ""},
-    books: [BookSchema],
+    books: [{type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
 });
 
 // Creating the model:

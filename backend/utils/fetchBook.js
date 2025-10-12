@@ -20,12 +20,18 @@ const fetchTrending = async () => {
 
 // Fetching specific book:
 const fetchBookId = async (bookId) => {
-    const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}`);
-    if (!res.ok) {
-        throw new Error("Error! Book not found...");
+    try {
+        const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${apiKey}`);
+        if (!res.ok) {
+            throw new Error("Error! Book not found...");
+        }
+        const data = await res.json();
+        return data;
     }
-    const data = await res.json();
-    return data;
+    catch (err) {
+        console.error(err);
+        res.status(404).json({msg: "Error! book not found"})
+    }
 }
 
 // Fetching for any match

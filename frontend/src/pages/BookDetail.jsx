@@ -37,9 +37,9 @@ const BookDetail = () => {
                     <FontAwesomeIcon className=' text-gray-800 text-2xl animate-spin' icon={faSpinner}></FontAwesomeIcon>
                     <p>Loading...</p>
                 </div> 
-                : <div key={currentBook.id}>
+                : <div>
                     <div>
-                        <BookInfo title={currentBook.volumeInfo.title} authors={currentBook.volumeInfo.authors} coverImg={currentBook.volumeInfo.imageLinks.thumbnail} description={currentBook.volumeInfo.description} categories={currentBook.volumeInfo.categories} />
+                        <BookInfo  key={currentBook.id} title={currentBook.volumeInfo.title} authors={currentBook.volumeInfo.authors} coverImg={currentBook.volumeInfo.imageLinks.thumbnail} description={currentBook.volumeInfo.description} categories={currentBook.volumeInfo.categories} />
                     </div>
                     <hr/>
                     <div>

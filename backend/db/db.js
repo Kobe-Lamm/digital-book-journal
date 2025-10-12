@@ -72,7 +72,7 @@ const createNewCollection = async ({title, author, books = []}) => {
     try {
         const foundCollection = await CollectionModel.findById(collectionId);
         if (!foundCollection) {
-            throw new Error ("Error finding book...")
+            throw new Error ("Error collection...")
         }
         return foundCollection;
     }
@@ -82,12 +82,19 @@ const createNewCollection = async ({title, author, books = []}) => {
     }
  }
 // Updating an existing collection:
+// Add new book to existing collection:
 // Deleting an existing colletion: 
 
 // Creating a new book:
-const createNewBook = async ({title, author, description, publicationDate}) => {
+const createNewBook = async ({googleId, title, author, publicationDate, description}) => {
     try {
-        const newBook = await BookModel.create({title: title, author: author, description: description, publicationDate: publicationDate})
+        const newBook = await BookModel.create({
+            googleId, 
+            title, 
+            author, 
+            publicationDate,
+            description
+        })
         if (!newBook) {
             throw new Error("Error creating book...")
         }
@@ -95,10 +102,23 @@ const createNewBook = async ({title, author, description, publicationDate}) => {
     }
     catch (err) {
         console.error(err)
+        throw err
     }
 }
 // Updating an existing book:
 // Finding an existing book:
+const findBook = async (bookId) => {
+    try {
+        const foundBook = await BookModel.findOne({ googleId: bookId });
+        if (!foundBook) {
+            return null
+        }
+        return foundBook;
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
 // Deleting an existing book: 
 
 
@@ -109,4 +129,5 @@ module.exports = {
     createNewCollection,
     findCollection,
     createNewBook,
+    findBook,
 }

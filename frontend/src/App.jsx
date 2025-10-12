@@ -12,6 +12,8 @@ import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard.jsx'
 import DashNav from './components/DashNav.jsx'
 import { useAuth } from './context/AuthContext.jsx'
+import CollectionList from './components/CollectionList.jsx'
+import BookListDisplay from './components/BookListDisplay.jsx'
 
 
 const App = () => {
@@ -28,6 +30,7 @@ const App = () => {
         <Route path="/discover" element={<Discover/>}></Route>
         <Route path="/dashboard/discover" element={<Discover/>}></Route>
         <Route path="/dashboard/:username" element={<Dashboard/>}></Route>
+        <Route path="/collection/:colId" element={<BookListDisplay />}></Route>
       </Routes>
     </div>
   )

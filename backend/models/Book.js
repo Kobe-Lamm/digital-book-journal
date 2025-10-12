@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const BookSchema = new mongoose.Schema({
+    googleId: {type: String, required: true},
     title: {type: String, default: "Unknown" ,required: true},
-    author: {type: String, required: true},
-    publicationDate: {type: Date, default: Date.now},
+    author: [String],
+    publicationDate: {type: String, default: "Unknown"},
     description: {type: String, default: "Write a description for your collection..."}
 })
 

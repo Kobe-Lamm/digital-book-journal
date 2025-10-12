@@ -7,7 +7,9 @@ import { useAuth } from '../context/AuthContext'
 
 // Logging in: 
 const Login = () => {
-  const {setLoggedIn, setCurrentUser} = useAuth();
+  // Authenticate context: 
+  const { setLoggedIn, setCurrentUser } = useAuth();
+  // Navigation:
   const navigate = useNavigate();
   // State variables: 
   const [input, setInput] = useState({
@@ -25,6 +27,7 @@ const Login = () => {
   }
   // Sending information to backend:
   const sendInfo = async (e) => {
+    console.log(input.password)
     // Prevent reloading
     e.preventDefault();
     // Async
@@ -33,15 +36,16 @@ const Login = () => {
       const res = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(input)
+        body: JSON.stringify(input),
+        credentials:"include",
       })
-      console.log(res)
       if (!res.ok) {
         throw new Error("Error logging in");
       }
       const data = await res.json() // Should be the json web token
       setLoggedIn(true);
       setCurrentUser(data);
+      console.log(data)
       navigate(`/dashboard/${data.username}`); // Navigate to personal dashboard
     }
     catch (err) {

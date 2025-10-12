@@ -1,6 +1,7 @@
 const {Router} = require("express");
 const bookRouter = Router();
-const {fetchBookId, fetchByCategory} = require('../utils/fetchBook')
+const {fetchBookId, fetchByCategory,} = require('../utils/fetchBook')
+
 
 // Defining routes:
 // Get routes:
@@ -18,7 +19,7 @@ bookRouter.get("/:bookId", async (req, res)=>{
     }
 })
 
-
+// Router for category
 bookRouter.post("/category", async (req, res)=>{
     try {
         const { categories } = req.body;

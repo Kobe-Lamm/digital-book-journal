@@ -75,7 +75,7 @@ const Search = () => {
                 </div>
                 <button type="button" onClick={handleClick} className='cursor-pointer bg-gray-800 text-white px-10 py-2 rounded-lg'>Search</button>
             </div>
-            <div className='bg-gray-50 curounded-lg mt-5 px-5 py-5 grid grid-cols-5 gap-5 items-start'>
+            <div className='bg-gray-50 curounded-lg mt-5 px-5 py-5 grid md:grid-cols-3 lg:grid-cols-5 grid-cols-1 gap-1 md:gap-3 lg:gap-5 items-start'>
                     {loading === false ? books.map((book)=>(
                         <BookCard title={book.volumeInfo.title} authors={book.volumeInfo.authors} bookId={book.id} coverImg = {book.volumeInfo.imageLinks.thumbnail} />
                     )) : 
