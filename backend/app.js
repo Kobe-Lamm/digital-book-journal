@@ -6,19 +6,22 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const port = process.env.PORT 
+const cookieParser = require('cookie-parser');
 
 // Importing routers: 
 const indexRouter = require('./routes/Index');
 const bookRouter = require('./routes/Book');
-const {Login, Signup, Logout} = require('./routes/Auth')
+const {Login, Signup, Logout, AuthRouter, Refresh} = require('./routes/Auth')
 const UserRouter = require('./routes/User')
 const CollectionRouter = require('./routes/Collection')
 
-// Cross Site:
+// Cookie parser:
+app.use( cookieParser() );
+// Cross Site
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true,
-    method: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
+    methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 // Parsing JSON
@@ -35,6 +38,8 @@ app.use('/login', Login);
 app.use('/dashboard', UserRouter);
 app.use('/logout', Logout);
 app.use('/collection', CollectionRouter);
+app.use('/verify', AuthRouter)
+app.use('/refresh', Refresh)
 
 // Listening for port requests
 app.listen(port, ()=>{

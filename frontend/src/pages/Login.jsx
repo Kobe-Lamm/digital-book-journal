@@ -45,8 +45,7 @@ const Login = () => {
       const data = await res.json() // Should be the json web token
       setLoggedIn(true);
       setCurrentUser(data);
-      console.log(data)
-      navigate(`/dashboard/${data.username}`); // Navigate to personal dashboard
+      navigate(`/dashboard/discover`); // Navigate to personal dashboard
     }
     catch (err) {
       console.error(err)

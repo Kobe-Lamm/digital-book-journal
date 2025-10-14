@@ -1,12 +1,13 @@
 // Dependencies: 
 const mongoose = require('mongoose');
 const { BookSchema } = require('./Book')
+const { UserSchema } = require('./User')
 
 
 // Creating the schema:
 const CollectionSchema = new mongoose.Schema({
     title: {type: String, required: true},
-    author: {type: String, required: true},
+    author: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     date: {type: Date, default: Date.now},
     description: {type: String, default: "Describe your collection!"},
     image: {type: String, default: ""},

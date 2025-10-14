@@ -44,8 +44,19 @@ const findUser = async (username) => {
         throw err
     }
 }
+const findUserById = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) {throw new Error("Can't find user...")}
+        await user.populate("collections");
+        return user;
+    }
+    catch (err) {
+        throw err;
+    }
+}
 // Creating a new collection:
-const createNewCollection = async ({title, author, books = []}) => {
+const createNewCollection = async ( {title, author, books = [], description} ) => {
     try {
         const image = defaultCollectionImages[0];
         // Creating a new collection
@@ -53,7 +64,8 @@ const createNewCollection = async ({title, author, books = []}) => {
             title, 
             author, 
             books,
-            image
+            description,
+            image,
         });
         // If it fails to create a new book
         if (!newCollection) {
@@ -126,6 +138,7 @@ const findBook = async (bookId) => {
 module.exports = {
     createNewUser,
     findUser,
+    findUserById,
     createNewCollection,
     findCollection,
     createNewBook,

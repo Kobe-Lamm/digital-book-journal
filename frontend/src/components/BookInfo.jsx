@@ -50,7 +50,7 @@ const BookInfo = ({title, authors, date, description, coverImg, categories = []}
               : <button onClick={()=>{showCollectionList(true)}} className='bg-gray-800 rounded-lg text-white px-5 py-2 cursor-pointer'>Add to collection</button>
             }
             {collectionList && 
-            <div className='flex flex-col py-2 px-3 gap-3 bg-gray-300'>
+            <div className='overflow-y-scroll flex flex-col py-2 px-3 gap-3 bg-gray-300'>
               <CollectionList />
               <button className='bg-gray-800 text-white rounded-lg py-2 px-5 cursor-pointer'  onClick={()=>{showCollectionList(false)}}>Cancel</button>
             </div>

@@ -15,9 +15,9 @@ const SignUp = () => {
   })
   // Initializing book collections for users:
   const defaultCollections = [
-    {title: "Reading", author: input.username, books:[] },
-    {title: "Wants to read", author: input.username, books:[] },
-    {title: "Already read", author: input.username, books:[]}
+    {title: "Reading", author: input._id, books:[] },
+    {title: "Wants to read", author: input._id, books:[] },
+    {title: "Already read", author: input._id, books:[]}
   ]
   // Submitting form and sending to backend: 
   const submitForm = async (e) => {
