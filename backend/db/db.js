@@ -33,7 +33,7 @@ const createNewUser = async ({ username, email, password, collections }) => {
 // Finding an existing user:
 const findUser = async (username) => {
     try {
-        const user = await User.findOne({username});
+        const user = await User.findOne({ username });
         if (!user) {
             throw new Error("Can't find user...")
         }
@@ -44,6 +44,7 @@ const findUser = async (username) => {
         throw err
     }
 }
+
 const findUserById = async (userId) => {
     try {
         const user = await User.findById(userId);
@@ -82,7 +83,9 @@ const createNewCollection = async ( {title, author, books = [], description} ) =
 // Finding an existing collection:
  const findCollection = async (collectionId) => {
     try {
-        const foundCollection = await CollectionModel.findById(collectionId);
+        const foundCollection = await CollectionModel.findOne(
+            {_id: collectionId},
+        );
         if (!foundCollection) {
             throw new Error ("Error collection...")
         }

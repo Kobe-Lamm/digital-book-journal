@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     age: { type: Number, default: 0 },
     email: { type: String, required: true },
     collections: [{type: mongoose.Schema.Types.ObjectId, ref: "Collection"}],
+    description: {type: String, default: "Tell us about yourself..."},
     profile: {type: String, default: "" }, // Storing the profile image: 
     password: { type: String, required: true },
     joined: {type: Date, default: Date.now },

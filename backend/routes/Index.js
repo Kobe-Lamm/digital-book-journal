@@ -5,7 +5,7 @@ const indexRouter = Router();
 // Fetching function:
 const { fetchBooks, fetchTrending } = require('../utils/fetchBook');
 
-// Get books upon loading
+// Get books upon loading:
 indexRouter.get('/', async (req, res)=>{
     try {
         const data = await fetchTrending();

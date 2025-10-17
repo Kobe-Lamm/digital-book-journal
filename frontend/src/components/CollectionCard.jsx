@@ -1,11 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const CollectionCard = ({id, title, author, description, coverImg}) => {
+const CollectionCard = ({ colId, title, author, description, coverImg }) => {
   const navigate = useNavigate();
   return (
     <div onClick={()=>{
-      navigate(`/collection/${id}`)
+      navigate(`/collection/${colId}`)
     }} className='cursor-pointer rounded-lg hover:translate-y-[-10px] transition-all duration-500 flex flex-col w-40 h-60'>
       <div>
         <img className='rounded-lg' src={coverImg}></img>
